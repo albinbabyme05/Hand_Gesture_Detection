@@ -16,3 +16,14 @@ class HandDetector:
         frame_RGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         self.results = self.hands.process(frame_RGB)
         return frame
+
+
+    def findPosition(self, frame, handNo=0):
+        my_list = []
+        if self.results.multi_hand_landmarks:
+            my_hand = self.results.multi_hand_landmarks[handNo]
+            for ID, land_mark_ID in enumerate(my_hand.landmark):
+                height, width, _ = frame.shape
+                cx, cy = int(land_mark_ID.x * width), int(land_mark_ID.y * height)
+                my_list.append([ID, cx, cy])
+        return my_list
